@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🌾 AI Crop Recommendation</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: "Segoe UI", system-ui, sans-serif; background: linear-gradient(135deg, #0f3d2e, #1b5e20); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
+    .card { background: #fff; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,.35); max-width: 520px; width: 100%; padding: 32px; }
+    h1 { color: #1b5e20; font-size: 1.5rem; margin-bottom: 4px; }
+    p.sub { color: #667; margin-bottom: 24px; font-size: .9rem; }
+    label { display: block; font-weight: 600; font-size: .8rem; color: #333; margin: 12px 0 4px; text-transform: uppercase; letter-spacing: .04em; }
+    input { width: 100%; padding: 10px 12px; border: 1.5px solid #d5dcd5; border-radius: 8px; font-size: 1rem; }
+    input:focus { outline: none; border-color: #2e7d32; }
+    button { margin-top: 22px; width: 100%; padding: 13px; background: #2e7d32; color: #fff; border: 0; border-radius: 8px; font-size: 1rem; font-weight: 700; cursor: pointer; }
+    button:hover { background: #1b5e20; }
+    .error { background: #fdecea; color: #b71c1c; padding: 10px 12px; border-radius: 8px; margin-top: 16px; font-size: .9rem; }
+    .warn { background: #fff8e1; color: #8d6e00; padding: 10px 12px; border-radius: 8px; margin-top: 16px; font-size: .9rem; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>🌾 AI Crop Recommendation</h1>
+    <p class="sub">Enter your soil &amp; climate readings to get the best crop match.</p>
+    {% if not model_ready %}<div class="warn">⚠️ Model not trained yet — run <code>python -m src.train</code>.</div>{% endif %}
+    {% if error %}<div class="error">{{ error }}</div>{% endif %}
+    <form method="post" action="/predict">
+      {% for f in features %}
+      <label for="{{ f }}">{{ f }}</label>
+      <input id="{{ f }}" name="{{ f }}" type="number" step="any" required />
+      {% endfor %}
+      <button type="submit">Recommend Crop</button>
+    </form>
+  </div>
+</body>
+</html>

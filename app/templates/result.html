@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🌾 Recommendation Result</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: "Segoe UI", system-ui, sans-serif; background: linear-gradient(135deg, #0f3d2e, #1b5e20); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
+    .card { background: #fff; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,.35); max-width: 520px; width: 100%; padding: 32px; }
+    h1 { color: #1b5e20; font-size: 1.4rem; margin-bottom: 18px; }
+    .best { background: #e8f5e9; border: 2px solid #2e7d32; border-radius: 12px; padding: 18px; text-align: center; margin-bottom: 16px; }
+    .best .crop { font-size: 2rem; font-weight: 800; color: #1b5e20; text-transform: capitalize; }
+    .best .conf { color: #555; margin-top: 4px; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid #eee; font-size: .92rem; }
+    th { color: #777; text-transform: uppercase; font-size: .7rem; letter-spacing: .05em; }
+    a.btn { display: inline-block; text-decoration: none; text-align: center; padding: 11px; background: #2e7d32; color: #fff; border-radius: 8px; font-weight: 700; width: 100%; }
+    .inputs { color: #667; font-size: .85rem; margin-bottom: 18px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>🌱 Recommended Crop</h1>
+    <div class="inputs">
+      Input — N: {{ features.N }} · P: {{ features.P }} · K: {{ features.K }} ·
+      Temp: {{ features.temperature }}°C · Humidity: {{ features.humidity }}% ·
+      pH: {{ features.ph }} · Rainfall: {{ features.rainfall }}mm
+    </div>
+    <div class="best">
+      <div class="crop">{{ results[0].crop }}</div>
+      <div class="conf">{{ "%.1f"|format(results[0].probability * 100) }}% confidence</div>
+    </div>
+    <table>
+      <tr><th>Rank</th><th>Crop</th><th>Probability</th></tr>
+      {% for r in results %}
+      <tr><td>{{ loop.index }}</td><td style="text-transform: capitalize">{{ r.crop }}</td><td>{{ "%.2f%%"|format(r.probability * 100) }}</td></tr>
+      {% endfor %}
+    </table>
+    <a class="btn" href="/">← New prediction</a>
+  </div>
+</body>
+</html>
